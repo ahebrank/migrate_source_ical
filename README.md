@@ -7,18 +7,19 @@ Requirements:
 
 Usage:
 
-# Migration configuration for products.
+# Example configuration for migrating date from .ics.
 id: events
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: ical
 label: Events
-migration_group: dsty
-migration_dependencies: {}
-
 source:
   plugin: ical
-  # track_changes: true
   high_water_property:
     name: lastmodified
-  path: "https://email.dsty.ac.jp/home/webseite-jahrestermine/calendar.ics"
+  path: 'https://example.com/basic.ics'
   identifier: upc
   identifierDepth: 1
   fields:
@@ -31,37 +32,31 @@ source:
     - location
   keys:
     - uid
-
-destination:
-  plugin: entity:node
-
 process:
   type:
     plugin: default_value
     default_value: events
   title: summary
   body: description
-  field_location: location
   field_event_date/value:
-    plugin: w3c_date
-    type: 'date-start'
-    to_format: 'Y-m-d\TH:i:s'
-    timezone: 'UTC'
-    source: dtstart
+    -
+      plugin: format_date
+      from_format: Ymd
+      to_format: Y-m-d
+      source: dtstart
   field_event_date/end_value:
-    plugin: w3c_date
-    to_format: 'Y-m-d\TH:i:s'
-    type: 'date-end'
-    timezone: 'UTC'
-    source: dtend
-
+    -
+      plugin: format_date
+      from_format: Ymd
+      to_format: Y-m-d
+      source: dtend
   sticky:
     plugin: default_value
     default_value: 0
-  status: 'published'
-  # path:
-  #   plugin: machine_name
-  #   source: SUMMARY
+  status: published
   uid:
     plugin: default_value
     default_value: 1
+destination:
+  plugin: 'entity:node'
+migration_dependencies: {  }

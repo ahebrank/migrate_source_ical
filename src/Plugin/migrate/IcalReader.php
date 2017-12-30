@@ -83,7 +83,7 @@
  * @see http://php.net/manual/en/class.recursiveiteratoriterator.php
  */
 
-namespace Drupal\dsty_events\Plugin\migrate;
+namespace Drupal\migrate_source_ical\Plugin\migrate;
 
 use Drupal\migrate\MigrateException;
 use GuzzleHttp\Exception\RequestException;
@@ -231,9 +231,10 @@ class ICALReader {
       foreach ($ical->events() as $events) {
         $response[] = (array) $events;
       }
+      // drush_print_r($response);
       // Each object returns and event array.
       $obj = new \ArrayIterator($response);
-
+      drush_print_r($obj);
       return $obj;
     } catch (RequestException $e) {
       throw new MigrateException($e->getMessage(), $e->getCode(), $e);

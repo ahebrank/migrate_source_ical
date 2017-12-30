@@ -1,6 +1,6 @@
 name: Migrate Source iCal
 description: Migrate data from calendars like google calendar or .ical files.
-version: 8.x
+core: 8.x
 type: module
 package: migrate
 dependencies:
