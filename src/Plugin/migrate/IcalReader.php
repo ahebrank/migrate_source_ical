@@ -231,10 +231,8 @@ class ICALReader {
       foreach ($ical->events() as $events) {
         $response[] = (array) $events;
       }
-      // drush_print_r($response);
       // Each object returns and event array.
       $obj = new \ArrayIterator($response);
-      drush_print_r($obj);
       return $obj;
     } catch (RequestException $e) {
       throw new MigrateException($e->getMessage(), $e->getCode(), $e);
