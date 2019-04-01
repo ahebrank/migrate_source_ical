@@ -20,8 +20,6 @@ source:
   high_water_property:
     name: lastmodified
   path: 'https://example.com/basic.ics'
-  identifier: upc
-  identifierDepth: 1
   fields:
     - uid
     - summary
@@ -38,18 +36,8 @@ process:
     default_value: events
   title: summary
   body: description
-  field_event_date/value:
-    -
-      plugin: format_date
-      from_format: Ymd
-      to_format: Y-m-d
-      source: dtstart
-  field_event_date/end_value:
-    -
-      plugin: format_date
-      from_format: Ymd
-      to_format: Y-m-d
-      source: dtend
+  field_event_date/value: dtstart
+  field_event_date/end_value: dtend
   sticky:
     plugin: default_value
     default_value: 0
