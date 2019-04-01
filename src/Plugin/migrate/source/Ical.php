@@ -73,12 +73,11 @@ class Ical extends SourcePluginBase {
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, array $namespaces = array()) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
 
-    $config_fields = array(
+    $config_fields = [
       'path',
       'fields',
-      'identifier',
-      'keys'
-    );
+      'keys',
+    ];
 
     // Store the configuration data.
     foreach ($config_fields as $config_field) {
@@ -92,35 +91,25 @@ class Ical extends SourcePluginBase {
     }
 
     // TODO:
-    $this->readerClass = !isset($configuration['readerClass']) ? '\Drupal\migrate_source_ical\Plugin\migrate\ICALReader' : $configuration['readerClass'];
+    $this->readerClass = !isset($configuration['readerClass']) ? '\Drupal\migrate_source_ical\IcalReader' : $configuration['readerClass'];
 
-    // Create the ICAL reader that will process the request, and pass it configuration.
+    // Create the ICAL reader that will process the request.
     $this->reader = new $this->readerClass($configuration);
 
   }
 
   /**
-   * Return a count of all available source records.
-   *
-   * @return int
-   *   The number of available source records.
-   */
-  public function _count($url) {
-    return count($this->reader->getSourceFields($url));
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function count() {
-    return $this->_count($this->path);
+  public function count($refresh = FALSE) {
+    return count($this->reader->getSourceFields($this->path));
   }
 
   /**
    * {@inheritdoc}
    */
   public function getIds() {
-    $ids = array();
+    $ids = [];
     foreach ($this->configuration['keys'] as $key) {
       $ids[$key]['type'] = 'string';
     }
@@ -152,7 +141,7 @@ class Ical extends SourcePluginBase {
    * {@inheritdoc}
    */
   protected function initializeIterator() {
-    $iterator = $this->reader->getSourceFieldsIterator($this->path);
-    return $iterator;
+    return $this->reader->getSourceFieldsIterator($this->path);
   }
+
 }
